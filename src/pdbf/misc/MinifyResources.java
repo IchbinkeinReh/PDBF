@@ -22,8 +22,13 @@ public class MinifyResources {
 		baseDirData + "diff_match_patch.js", baseDirData + "jquery-3.0.0-beta1.min.js", baseDirData + "pivot.js",
 		baseDirData + "jquery-ui-1.9.2.custom.min.js", baseDirData + "l10n.js", baseDirData + "viewer.js", baseDirData + "main.js",
 		baseDirData + "preMain.js", baseDirData + "compatibility.js", baseDirData + "jstat.js", baseDirData + "pdf.js",
-		baseDirData + "jquery.dataTables.js", "--js_output_file", baseDirData + "all.js", "--language_in", "ECMASCRIPT5", "--compilation_level",
-		"WHITESPACE_ONLY", "--charset", "UTF-8" };
+		baseDirData + "jquery.dataTables.js", 
+		baseDirData + "cm-provider.js",
+		baseDirData + "coq-layout-classic.js",
+		baseDirData + "coq-manager.js",
+		baseDirData + "coq-packages.js",
+		"--js_output_file", baseDirData + "all.js", "--language_in", "ECMASCRIPT6", "--compilation_level",
+		"WHITESPACE_ONLY", "--language_out", "ES5", "--charset", "UTF-8" };
 
 	try {
 	    new File(baseDirData + "all.js").delete();
@@ -55,7 +60,7 @@ public class MinifyResources {
 	// Combine all css files to all.css
 	new File(baseDirData + "all.css").delete();
 	String cssFiles[] = { baseDirData + "viewer.css", baseDirData + "pivot.css", baseDirData + "jquery.dataTables.css", baseDirData + "codemirror.css",
-		baseDirData + "c3.css" };
+		baseDirData + "c3.css", baseDirData + "coq-base.css", baseDirData + "coq-light.css" };
 	for (String cssFile : cssFiles) {
 	    try {
 		String out = FileUtils.readFileToString(new File(cssFile), Tools.utf8);

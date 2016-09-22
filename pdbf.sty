@@ -342,6 +342,11 @@
 {\pdbf@sqlmult{\IfValueTF{#2}{#2}{\pdbf@tmpstore}}{#3}{pdbf.json.Text}{#1}}%
 }
 
+\NewDocumentCommand\coq{O{} o m}{%
+\StrSubstitute{#3}{_}{$\string_$}[\pdbf@tmpstore]
+{\pdbf@sqlmult{\IfValueTF{#2}{#2}{\pdbf@tmpstore}}{#3}{pdbf.json.Coq}{#1}}%
+}
+
 \def\pdbf@csxdefaux#1{%
     \protected@write\@mainaux{}{%
        \string\expandafter\string\gdef

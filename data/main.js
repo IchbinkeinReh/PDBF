@@ -216,6 +216,7 @@ function display(json, page, phantomJS) {
 			}
 			// Fallthrough
 		case "pdbf.json.Text":
+		case "pdbf.json.Coq":
 			if (!phantomJS) {
 				container.addEventListener("click", function() {
 					if (containerOver == null) {
