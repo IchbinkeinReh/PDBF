@@ -27,7 +27,7 @@ class CmCoqProvider {
               indentUnit    : 4,
               matchBrackets : true,
               // theme         : 'blackboard',
-              keyMap        : "emacs"
+			  lineWrapping	: true
             };
 
         if (typeof element === 'string' || element instanceof String) {

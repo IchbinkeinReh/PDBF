@@ -35,11 +35,23 @@ public class HTML_PDF_Compiler {
 	    String add;
 	    if (PDBF_Compiler.includeRes) {
 		add = "</script>";
+		String[] coqFiles = {
+			baseDirData + "coq-manager.js",
+			baseDirData + "cm-provider.js",
+			baseDirData + "coq-layout-classic.js",
+			baseDirData + "coq-packages.js",
+			baseDirData + "jscoq.js",
+			baseDirData + "coq.js",
+			baseDirData + "tex-input-hint.js"
+		};
+		for (String s : coqFiles) {
+		    add += "\n<script>" + FileUtils.readFileToString(new File(s), Tools.utf8) + "</script>";
+		}
 	    } else {
 		add = "</script> <link rel=\"stylesheet\" href=\"viewer.css\"/>" + "<link rel=\"stylesheet\" href=\"pivot.css\"/>"
 			+ "<link rel=\"stylesheet\" href=\"codemirror.css\"/>" + "<link rel=\"stylesheet\" href=\"jquery.dataTables.css\"/>"
 			+ "<link rel=\"stylesheet\" href=\"c3.css\"/>" + "<link rel=\"stylesheet\" href=\"coq-base.css\"/>"
-			+ "<link rel=\"stylesheet\" href=\"coq-light.css\"/>"
+			+ "<link rel=\"stylesheet\" href=\"coq-light.css\"/>" + "<link rel=\"stylesheet\" href=\"jscoq.css\"/>"
 			+ "<script src=\"lz-string.js\"></script>" + "<script src=\"base64.js\"></script>"
 			+ "<script src=\"d3.js\"></script>" + "<script src=\"alasql.js\"></script>" + "<script src=\"codemirror-compressed.js\"></script>"
 			+ "<script src=\"c3.js\"></script>" + "<script src=\"excanvas.compiled.js\"></script>"
@@ -48,9 +60,15 @@ public class HTML_PDF_Compiler {
 			+ "<script src=\"jquery.dataTables.js\"></script>" + "<script src=\"main.js\"></script>" + "<script src=\"preMain.js\"></script>"
 			+ "<script src=\"jstat.js\"></script>" + "" + "<script src=\"compatibility.js\"></script>" + "<script src=\"l10n.js\"></script>"
 			+ "<script src=\"pdf.js\"></script>" + "<script src=\"pdf.worker.js\"></script>" + "<script src=\"viewer.js\"></script>"
-			+ "<script src=\"cm-provider.js\"></script>" + "<script src=\"coq-layout-classic.js\"></script>"
-			+ "<script src=\"coq-manager.js\"></script>" + "<script src=\"coq-packages.js\"></script>";
+			+ "<script src=\"coq-manager.js\"></script>"
+			+ "<script src=\"cm-provider.js\"></script>"
+			+ "<script src=\"coq-layout-classic.js\"></script>"
+			+ "<script src=\"coq-packages.js\"></script>"
+			+ "<script src=\"jscoq.js\"></script>"
+			+ "<script src=\"coq.js\"></script>"
+			+ "<script src=\"tex-input-hint.js\"></script>";
 	    }
+	    
 	    String all = FileUtils.readFileToString(new File(baseDirData + "all"), Tools.utf8);
 	    String preload = FileUtils.readFileToString(new File(baseDir + "pdbf-preload"));
 	    viewer = viewerHEAD + "pdf_base64 = \"" + Tools.encodeFileToBase64Binary(new File(pdfname.substring(0, pdfname.length() - 4) + "Embed.pdf"))

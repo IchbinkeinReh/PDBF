@@ -216,7 +216,6 @@ function display(json, page, phantomJS) {
 			}
 			// Fallthrough
 		case "pdbf.json.Text":
-		case "pdbf.json.Coq":
 			if (!phantomJS) {
 				container.addEventListener("click", function() {
 					if (containerOver == null) {
@@ -226,6 +225,22 @@ function display(json, page, phantomJS) {
 						containerOver.className = "centerhv";
 						buildContainerTableBig(json, containerOver);
 					}
+					containerOver.style.visibility = 'visible';
+					containerOver.style['z-index'] = 9;
+					containerOver.style.opacity = 1;
+				});
+			}
+			style += 'cursor: pointer;';
+			container.setAttribute('style', style);
+			break;
+		case "pdbf.json.Coq":
+			if (!phantomJS) {
+				container.addEventListener("click", function() {
+					containerOver = document.createElement('div');
+					containerOver.setAttribute('style', styleBig);
+					containerOver.id = json.name + "Big";
+					containerOver.className = "centerhv";
+					buildContainerCoqBig(json, containerOver);
 					containerOver.style.visibility = 'visible';
 					containerOver.style['z-index'] = 9;
 					containerOver.style.opacity = 1;
@@ -280,6 +295,88 @@ function display(json, page, phantomJS) {
 			break;
 	}
 	toc("Display time for " + json.name);
+}
+
+function buildContainerCoqBig(json, containerOver) {
+	var viewerContainer = document.getElementById("viewerContainer");
+	var tip = "";
+	json.jsonBig = jQuery.extend(true, {}, json);
+	
+	var containerChart = document.createElement('div');
+	containerChart.setAttribute('style', 'width:66%; height:95%; -moz-border-radius: 1%; -webkit-border-radius: 1%; border-radius: 1%; padding:2%; background:white; margin:1%; margin-top:2em; display: inline-block; vertical-align:top; white-space: normal;');
+	
+	var containerControl = document.createElement('div');
+	containerControl.setAttribute('style', 'width:30%; -moz-border-radius: 1%; -webkit-border-radius: 1%; border-radius: 1%; padding:2%; background:white; margin:1%; margin-top:2em; display: inline-block; text-align: left; white-space: normal;');
+	
+	var containerTip = document.createElement('div');
+	containerTip.setAttribute('style', 'font-weight: bold;');
+	containerTip.innerHTML = tip;
+	containerControl.appendChild(containerTip);
+	
+	containerControl.appendChild(getSpacer());
+	
+	var header = document.createElement('span');
+	header.innerHTML = '<span style="text-decoration:underline;">Code for Coq:</span>';
+	containerControl.appendChild(header);
+	
+	var textareaWrapper = document.createElement('div');
+	containerControl.appendChild(textareaWrapper);
+	textareaWrapper.setAttribute('style', 'border: 1px solid black; margin-top: 3px; margin-bottom: 3px;');
+	
+	var textarea = document.createElement('textarea');
+	textarea.id = json.name + "BigTextArea";
+	textareaWrapper.appendChild(textarea);
+	
+	containerControl.appendChild(getSpacer());
+	containerControl.appendChild(getSpacer());
+	
+	var error = document.createElement('span');
+	containerControl.appendChild(error);
+	error.innerHTML = 'Coq status: OK';
+
+	var containerChartSub = document.createElement('div');
+	containerChartSub.setAttribute('style', 'width:100%; height:100%; max-height:100%; z-index:9999');
+	containerChart.appendChild(containerChartSub);
+	containerChartSub.id = json.name + "BigCoq";
+	
+	var containerClose = document.createElement('div');
+	containerClose.innerHTML = 'Click here to close this window (or press Escape) [X]';
+	containerClose.setAttribute('style', 'float:right; cursor: pointer; font-weight: bold;');
+	addClickCloseHandler(containerClose, containerOver);
+	containerClose.addEventListener("click", function() {
+		delete json.jsonBig;
+		json.jsonBig = jQuery.extend(true, {}, json);
+		while (containerOver.firstChild) {
+			containerOver.removeChild(containerOver.firstChild);
+		}
+		viewerContainer.removeChild(containerOver);
+	});
+	containerOver.appendChild(containerClose);
+						
+	var center = document.createElement('center');
+	center.appendChild(containerControl);
+	center.appendChild(containerChart);
+	containerOver.appendChild(center);
+	viewerContainer.appendChild(containerOver);
+	
+	textarea.innerHTML = json.type.I.query;
+	$(textarea).on('blur', function() {
+		alert("update");
+	});
+	
+	initjscoq();
+	var jscoq_ids  = [json.name + "BigTextArea"];
+	var jscoq_opts = {
+		prelude:   true,
+		mock:      false,
+		base_path: 'https://ichbinkeinreh.de/coq',
+		init_pkgs: ['init'],
+		wrapper_id: json.name + "BigCoq"
+	};
+	var coq = new CoqManager(jscoq_ids, jscoq_opts);
+	$(".CodeMirror-cursor").text("");
+	
+	fixOverlaySize();
 }
 
 function buildContainerChartBig(json, containerOver, initial) {

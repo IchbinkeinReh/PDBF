@@ -4,8 +4,6 @@
 // This class provides a plugabble side panel with proof and query
 // buffers.
 
-"use strict";
-
 var COQ_LOG_LEVELS = {
     DEBUG : 'debug',
     INFO  : 'info',
@@ -23,33 +21,21 @@ class CoqLayoutClassic {
     <div id="toolbar">
       <div style="position:relative; left:-34px; top:2px">
       <div style="position:absolute">
-      <svg id="hide-panel" title="Toggle panel (F8)" width="32" height="32">
-        <path d="M16.001,0C7.165,0,0,7.164,0,16.001S7.162,32,16.001,32C24.838,32,32,24.835,32,15.999S24.838,0,16.001,0L16.001,0z"/>
-        <g>
-	  <path fill="#FFFFFF" d="M14,4.212c0-0.895,0.607-1.617,1.501-1.617C16.393,2.595,17,3.317,17,4.212v11.124
-		                  c0,0.892-0.607,1.614-1.499,1.614c-0.894,0-1.501-0.722-1.501-1.614V4.212z"/>
-	  <path fill="#FFFFFF" d="M16.001,27.817c-6.244,0-11.321-5.08-11.321-11.321c0-4.049,2.188-7.817,5.711-9.831
-		                  c0.772-0.441,1.761-0.173,2.203,0.6c0.444,0.775,0.174,1.761-0.6,2.206c-2.519,1.441-4.083,4.133-4.083,7.025
-		                  c0,4.462,3.629,8.09,8.09,8.09c4.459,0,8.091-3.628,8.091-8.09c0-2.892-1.567-5.584-4.086-7.025
-		                  c-0.773-0.444-1.043-1.431-0.599-2.206c0.444-0.773,1.43-1.044,2.203-0.6c3.523,2.014,5.711,5.782,5.711,9.831
-		                  C27.32,22.737,22.243,27.817,16.001,27.817L16.001,27.817z"/>
-        </g>
-      </svg>
       </div>
       </div>
       <div class="exits">
         <a href="http://feever.fr/" target="_blank">
-          <img src="${base_path}/ui-images/feever-logo.png" alt="FEEVER Logo" height="34" width="67"
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAAAkCAIAAABdWRDGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABOBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wUmlnaHRzPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvcmlnaHRzLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1wUmlnaHRzOk1hcmtlZD0iVHJ1ZSIgeG1wUmlnaHRzOldlYlN0YXRlbWVudD0iaHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQuMC9kZWVkLmZyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6RkI3RjExNzQwNzIwNjgxMTgyMkFFQTJFMzk5NkMxNDIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTgzNDkxNTI2NDYyMTFFNUJGM0E5QTQyOTQyM0NBMzIiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTgzNDkxNTE2NDYyMTFFNUJGM0E5QTQyOTQyM0NBMzIi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" alt="FEEVER Logo" height="34" width="67"
                style="vertical-align: middle"/>
         </a>
         <a href="https://github.com/ejgallego/jscoq">Readme @ GitHub</a>
       </div> <!-- /#exits -->
       <span id="buttons">
-        <img src="${base_path}/ui-images/up.png" width="21" height="24"
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAYCAYAAAAVibZIAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHxJREFUeNpiZiACyOaZCfCbSx8H4p+fTj69QEg9MzEGAqn9QGwAxAFAgx8SMpiZBANhgKDBzCQaSJTBzGQYSNBgZjINxGswMwUG4jSYmUIDsRrMTAUDMQxmpJKByCCREU+S+k9I9+NJp7DqZ2KgARg1dNTQUUNHpqEAAQYAPj1DLPCI+JEAAAAASUVORK5CYII=" width="21" height="24"
              alt="Up (Meta-P)" title="Up (Meta-P)" name="up"/>
-        <img src="${base_path}/ui-images/down.png" width="21" height="25"
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAZCAYAAADe1WXtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJJJREFUeNpiZMABZPPM/jMQAI8nnWLEJs7EQAMwauiooaOGjkxDGYGlkQGQ3g/EAlQw7wIQOzJCizlqGAw2EFgcfmBEKj8pMRhuINj7aAUzOQajGIhhKBkGYxiI1VASDMZqIE5DiTAYp4F4DcVjMF4DCRqKxWCCBoIAMyFDP518+oLfXHonkKkBxJ6EDKQZAAgwALdtPzuuLNPEAAAAAElFTkSuQmCC" width="21" height="25"
              alt="Down (Meta-N)" title="Down (Meta-N)" name="down"/>
-        <img src="${base_path}/ui-images/to-cursor.png" width="38" height="24"
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAYCAYAAACWTY9zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAORJREFUeNrslt0RwiAMgCnHJC7ho6vUAZzGAWAdl3CVGjx753km5JcHzzw2Tfn4gJSU/vEjsWCJw+W43q+3NvoAvLd9ew61C6MWHSMTdbUXRhl5fbti+TKo73CJMreb2c1xTVFQI2Mh5jhQXDA3OC6UBMwMJ4F67jHsVGn3nBQKGz8rJi8yJzVlAWPDaaEsYEM4C5QVrMdJmQsFa3AIzkTj7bk2G4yE8oDLUVBWuIL925D+IoJ6h+v9D2Ll3kJylCmruTwDSgNXrFCfSz66/lDLKjHmYsq1lcCsagqOGWO4x0OAAQASlX7FMm0/EgAAAABJRU5ErkJggg==" width="38" height="24"
              alt="To cursor (Meta-Enter)" title="To cursor (Meta-Enter)" name="to-cursor"/>
       </span>
     </div> <!-- /#toolbar -->
@@ -99,7 +85,7 @@ class CoqLayoutClassic {
         this.buttons  = document.getElementById('buttons');
 
         // XXXXXXX: This has to be fixed.
-        this.log_css_rules = document.styleSheets[1].cssRules;
+        this.log_css_rules = document.getElementById("coq-log").sheet.cssRules;
 
         var flex_container = this.panel.getElementsByClassName('flex-container')[0];
         flex_container.addEventListener('click', evt => { this.panelClickHandler(evt); });

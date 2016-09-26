@@ -8,7 +8,6 @@
 //
 
 // XXX: use RequireJS or something like that.
-"use strict";
 
 var COQ_LOG_LEVELS = {
     DEBUG : 'debug',
@@ -208,7 +207,7 @@ class CoqManager {
             (this.options.mock ? 'coq-js/jsmock' : 'coq-js/jscoq');
 
         // Missing Promise.bind from the browsers....
-        loadJs(coq_script)().then(() => this.setupCoq());
+        this.setupCoq();
     }
 
     setupCoq() {
@@ -219,10 +218,6 @@ class CoqManager {
 
         // Keybindings setup
         document.addEventListener('keydown', evt => this.keyHandler(evt));
-
-        // XXX: Depends on the layout.
-        document.getElementById('hide-panel')
-            .addEventListener('click', evt => this.layout.toggle() );
 
         // XXX: Only done for the adjustWidth
         this.layout.coq = this.coq;

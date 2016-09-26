@@ -17,22 +17,18 @@ public class MinifyResources {
 	String baseDirData = baseDir + "data" + File.separator;
 	String suffix = Tools.getOS();
 
-	String command[] = { "java", "-jar", baseDirData + "google-closure-compiler-20160208.jar", baseDirData + "alasql.js", baseDirData + "base64.js",
+	String command[] = { "java", "-jar", baseDirData + "closure-compiler-v20160911.jar", baseDirData + "alasql.js", baseDirData + "base64.js",
 		baseDirData + "lz-string.js", baseDirData + "d3.js", baseDirData + "c3.js", baseDirData + "excanvas.compiled.js",
 		baseDirData + "diff_match_patch.js", baseDirData + "jquery-3.0.0-beta1.min.js", baseDirData + "pivot.js",
 		baseDirData + "jquery-ui-1.9.2.custom.min.js", baseDirData + "l10n.js", baseDirData + "viewer.js", baseDirData + "main.js",
 		baseDirData + "preMain.js", baseDirData + "compatibility.js", baseDirData + "jstat.js", baseDirData + "pdf.js",
-		baseDirData + "jquery.dataTables.js", 
-		baseDirData + "cm-provider.js",
-		baseDirData + "coq-layout-classic.js",
-		baseDirData + "coq-manager.js",
-		baseDirData + "coq-packages.js",
-		"--js_output_file", baseDirData + "all.js", "--language_in", "ECMASCRIPT6", "--compilation_level",
-		"WHITESPACE_ONLY", "--language_out", "ES5", "--charset", "UTF-8" };
+		baseDirData + "jquery.dataTables.js",
+		"--js_output_file", baseDirData + "all.js", "--language_in", "ECMASCRIPT5", "--compilation_level",
+		"WHITESPACE_ONLY", "--charset", "UTF-8" };
 
 	try {
 	    new File(baseDirData + "all.js").delete();
-
+	    
 	    // TODO: for unknown reasons pdfworkerjs breaks on minification with
 	    // the google closure compiler
 	    String pdfworkerJS = FileUtils.readFileToString(new File(baseDirData + "pdf.worker.js"), Tools.utf8);
@@ -60,7 +56,7 @@ public class MinifyResources {
 	// Combine all css files to all.css
 	new File(baseDirData + "all.css").delete();
 	String cssFiles[] = { baseDirData + "viewer.css", baseDirData + "pivot.css", baseDirData + "jquery.dataTables.css", baseDirData + "codemirror.css",
-		baseDirData + "c3.css", baseDirData + "coq-base.css", baseDirData + "coq-light.css" };
+		baseDirData + "c3.css", baseDirData + "coq-base.css", baseDirData + "coq-light.css", baseDirData + "jscoq.css" };
 	for (String cssFile : cssFiles) {
 	    try {
 		String out = FileUtils.readFileToString(new File(cssFile), Tools.utf8);

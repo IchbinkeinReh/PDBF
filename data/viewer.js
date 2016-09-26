@@ -185,7 +185,7 @@ function scrollIntoView(element, spot) {
  * Helper function to start monitoring the scroll event and converting them into
  * PDF.js friendly one: with scroll debounce and scroll direction.
  */
-function watchScroll(viewAreaElement, callback) {
+window.watchScroll = function(viewAreaElement, callback) {
   var debounceScroll = function debounceScroll(evt) {
     if (rAF) {
       return;
@@ -216,8 +216,7 @@ function watchScroll(viewAreaElement, callback) {
   var rAF = null;
   viewAreaElement.addEventListener('scroll', debounceScroll, true);
   return state;
-}
-
+};
 /**
  * Generic helper to find out what elements are visible within a scroll pane.
  */
